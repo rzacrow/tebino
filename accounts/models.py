@@ -70,3 +70,15 @@ class Comments(models.Model):
 
     def __str__(self) -> str:
         return f"{self.doctor.profile.first_name} {self.doctor.profile.last_name}"
+    
+
+class Notifications(models.Model):
+    NOTIFICATIONS_STATUS = (
+        ('SEEN', 'Seen'),
+        ('UNSEEN', 'Unseen')
+    )
+
+    send_to = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    title = models.CharField(max_length=128, blank=False, null=False)
+    caption = models.CharField(max_length=256, blank=False, null=False)
+    status = models.CharField(max_length=6, choices=NOTIFICATIONS_STATUS, blank=False, null=False)
