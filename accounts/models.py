@@ -5,7 +5,7 @@ class CustomUser(AbstractUser):
     national_code = models.CharField(max_length=10, null=False, blank=False, unique=True)
     phone = models.CharField(max_length=11, blank=False, null=False)
     
-    REQUIRED_FIELDS = ['national_code', 'password', 'phone', 'first_name', 'last_name']
+    REQUIRED_FIELDS = ['national_code', 'password']
 
     def __str__(self) -> str:
         return f"{self.first_name} {self.last_name}" 
@@ -33,11 +33,12 @@ class SubSpecialty(models.Model):
 
 class Doctor(models.Model):
     profile = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    specialty = models.ForeignKey(Specialty, on_delete=models.CASCADE)
-    sub_specialty = models.ForeignKey(SubSpecialty, on_delete=models.CASCADE)
-    address = models.CharField(max_length=255, blank=False, null=False)
-    state = models.ForeignKey(State, on_delete=models.SET_NULL, null=True, blank=False)
-    city = models.ForeignKey(City, on_delete=models.SET_NULL, null=True, blank=False)
+    specialty = models.ForeignKey(Specialty, on_delete=models.CASCADE, blank=True, null=True)
+    sub_specialty = models.ForeignKey(SubSpecialty, on_delete=models.CASCADE, blank=True, null=True)
+    address = models.CharField(max_length=255, blank=True, null=True)
+    state = models.ForeignKey(State, on_delete=models.SET_NULL, blank=True, null=True)
+    city = models.ForeignKey(City, on_delete=models.SET_NULL, blank=True, null=True)
+    is_active = models.BooleanField(default=False,)
 
 class SCORE(models.Model):
     COUNT_SCORE = (

@@ -17,4 +17,5 @@ class State(models.Model):
     name = models.CharField(choices=STATE_CHOICES, max_length=256, unique=True, blank=False, null=False)
 
 class City(models.Model):
+    state = models.ForeignKey(State, on_delete=models.CASCADE)
     name = models.CharField(max_length=256, blank=False, null=False)

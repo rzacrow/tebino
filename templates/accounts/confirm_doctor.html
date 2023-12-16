@@ -1,0 +1,69 @@
+{% extends "../base.html" %}
+
+{% block title %}تکمیل اطلاعات{% endblock %}
+
+{% block body %}
+{% load static %}
+    <div class="back-color-fit">
+        <div class="container glassmorphism-form  back-color-white shadow-lg rounded-top-lg">
+            <div class="row">
+                <div class="col-lg-8">
+                    <img src="{% static '' %}" class="img-fluid limitted-hight">
+                </div>
+
+                <div class="col-lg-4 flex-center flex-column">
+                    {% if messages %}
+                    {% for message in messages %}
+                        <h6 class="font-bold">{{message}}</h6>
+                    {% endfor %}
+                    {% endif %}
+
+                    <h4 class="font-bold">تکمیل اطلاعات دکتر</h4>
+                    <form method='post' action="" class="full-width from-top-25" novalidate>
+                        {% csrf_token %}
+                        {{form.as_div}}
+                        <select name="states" id="states" class="form-control">       
+                            <option value="0">--استان--</option>     
+                            {% for state in states  %}
+                            <option value="{{ state.id }}">{{ state.name }}</option>
+                            {% endfor %}
+                        </select>
+                        <select name="cities" id="cities" class="form-control">
+                            <option value="0">--شهر--</option>  
+                            {% for city in cities  %}
+                            <option value="{{ city.state_id }}">{{ city.name }}</option>
+                            {% endfor %}
+                        </select>
+                        <input type='submit' value='ثبت' class="btn btn-submit">
+                    </form>
+                    <div class="form-check">{%if is_doctor_form %}<a href="{% url 'singup' %}" class="center-icon-text from-top-10"><span class="material-symbols-outlined">
+                        badge
+                        </span> &nbsp; ایجاد حساب بیمار</a>{% else %}<a href="{% url 'signup_doctor' %}" class="center-icon-text from-top-10"><span class="material-symbols-outlined">
+                            stethoscope
+                            </span> &nbsp; ایجاد حساب پزشکان</a>{% endif %}</div>
+                    <div class="form-check"><a href="{% url 'login' %}" class="center-icon-text from-top-10"><span class="material-symbols-outlined">
+                        login
+                        </span> &nbsp; حساب دارید؟ وارد آن شوید</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+ 
+        $(document).ready(function(){
+         
+         var states = $("#states");
+         var cities = $("#cities");
+         var $options = cities.find('option');
+         states.on('change',function(){
+            cities.html($options.filter('[value="'+ this.value  +'"]'));
+         }).trigger('change'); 
+         
+         
+        }); 
+    </script> 
+{% endblock %}

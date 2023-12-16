@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% block title %}پنل کاربری{% endblock %}
+
+
+{% block body %}
+    {% load static %}
+<div class="container">
+                                    <!-- Filter Date Time Modal -->
+                                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            <h4 class="modal-title fs-5" id="exampleModalLabel">ویرایش اطلاعات</h4>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+        
+                                            <form method="post" action="{%if personal %}{%url 'updateprofilepersonal' %}{% else %}{%url 'updateprofile' %}{% endif %}" class="form-control">
+                                                <div class="modal-body">
+                                                        {% csrf_token %}
+                                                        {{ update_profile_form.as_div }}
+                                                </div>
+            
+                                                <div class="modal-footer">
+                                                    <input type="submit" class="btn btn-primary" value="ویرایش">
+            
+                                                </div>
+                                            </form>
+
+                                        </div>
+                                        </div>
+                                    </div>
+        <!-- Messages -->
+        {% if messages %}
+        {% for message in messages %}
+            <div class="row glassmorphism from-top-10 rounded-md">
+                <div class="col">
+                    <p class="font-bold">{{message}}</p>
+                </div>
+            </div>
+        {% endfor %}
+        {% endif %}
+
+
+        <!-- Notifications -->
+        {% if notifications %}
+        <div class="row from-top-10">
+        {% for notification in notifications %}
+            <div class="row glassmorphism rounded-md">
+                <div class="col">
+                    <h6 class="font-bold center-icon-text"><span class="material-symbols-outlined">
+                        notifications
+                        </span>{{notification.title}}</h6 class="font-bold">
+                    <p>{{notification.caption}}</p>
+                </div>
+                <a href="{% url 'seen_notifications' %}">مشاهده شد</a>
+            </div>
+        {% endfor %}
+        </div>
+        {% endif %}
+
+
+        <!-- Dashboard -->
+        <div class="row from-top-25">
+            <div class="flex-column">
+                <!-- Profile Detail-->
+                <div class="col glassmorphism rounded-md">
+                        <div class="row align-center flex-start">
+                            <div class="col-8 align-center">
+
+                                <div class="col-md-1 col-sm-4 font-biggest">
+                                    <img src="{%static 'accounts/images/profile-icon.png' %}" class="max-width-45">
+                                </div>
+
+                                <div class="col-md-1 col-sm-4"><h5 class="font-bold without-space">{{user.username}}</h5>
+                                </div>
+
+                                <div class="col-10 col-sm-4">
+                                </div>
+
+                            </div>
+
+                            <div class="col-4 align-center flex-end">
+                                <div class="row align-center">
+                                    <div class="col-sm">
+                                        <a href="{%url 'logout' %}" class="center-icon-text yellow-link"><span class="material-symbols-outlined">
+                                            logout
+                                        </span>&nbsp;خروج</a>
+                                    </div>
+                                    <div class="col-sm">
+                                        <button type="button" class="btn btn-primary center-icon-text from-top-15-mobile" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                            <span class="material-symbols-outlined">
+                                                edit_note
+                                            </span>&nbsp;
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+
+
+                <div class="col without-space glassmorphism rounded-md">
+                    <!-- Owner Dashboard -->
+                    {% if superuser %}
+                        <h4>Hi admin</h4>
+                    {% else %}
+                    <!-- End Owner Dashboard-->
+                
+                </div>
+            </div>
+        </div>
+</div>
+
+<footer></footer>
+{% endblock %}
